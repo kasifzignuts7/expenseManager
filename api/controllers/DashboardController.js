@@ -11,8 +11,4 @@ module.exports = {
     // console.log("hey");
     res.view("pages/homepage");
   },
-  //Dashboard
-  dashboard: async function (req, res) {
-    res.view("pages/dashboard");
-  },
 };

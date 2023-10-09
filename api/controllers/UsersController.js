@@ -108,6 +108,6 @@ module.exports = {
   },
   //Logout User
   logout: function (req, res) {
-    res.cookie("jwt", "", { maxAge: 1 }).redirect("/");
+    res.clearCookie("jwt").redirect("/");
   },
 };

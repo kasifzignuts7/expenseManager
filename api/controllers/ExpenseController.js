@@ -31,7 +31,7 @@ module.exports = {
         transactiontype,
         desc,
         amount,
-      }).fetch();
+      });
       res.redirect(`/expense/${id}`);
     } catch (err) {
       res.status(400).json(err);
@@ -61,6 +61,7 @@ module.exports = {
       }
     } catch (err) {
       console.log(err);
+
     }
   },
   delete: async function (req, res) {
