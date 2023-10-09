@@ -12,6 +12,7 @@ module.exports = {
     id = req.params.id;
     let expenses = await Expense.find({ groupid: id });
     expenses = expenses.reverse();
+    // .sort({ createdAt: -1 })
     const { members } = await Accounts.findOne({ id });
 
     for (let i = 0; i < members.length; i++) {
@@ -61,7 +62,6 @@ module.exports = {
       }
     } catch (err) {
       console.log(err);
-
     }
   },
   delete: async function (req, res) {

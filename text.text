@@ -1,0 +1,7 @@
+// fuction checkPassword(pass) {
+//   if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(pass)) {
+//     throw new Error("E0001");
+//   }
+
+//   // Password is acceptable
+// }
