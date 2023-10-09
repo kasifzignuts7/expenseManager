@@ -1,0 +1,362 @@
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand fs-2 primary logo ms-4" href="/">xPenses</a>
+  
+    <button
+    class="navbar-toggler"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <!-- <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#">Home</a>
+      </li> -->
+    </ul>
+
+    <!-- Button trigger modal -->
+  <%  if(user){ %>
+      <a
+      type="button"
+      href="/account"
+      class="btn btn-outline-success mx-2"
+    >
+      Your accounts
+    </a>
+ <%   }else{ %>
+      <button
+      type="button"
+      class="btn btn-outline-success mx-2"
+      data-bs-toggle="modal"
+      data-bs-target="#loginmodal"
+    >
+      Login
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-outline-success mx-2"
+      data-bs-toggle="modal"
+      data-bs-target="#signupmodal"
+    >
+      Sign Up
+    </button>
+<% } %>
+   
+  </div>
+
+  </div>
+</nav>
+<!-- MAIN CONTAINER -->
+<div class="container main">
+  <div class="row">
+    <div class="col-sm">
+      <h1 class="heading">
+        Less stress when sharing expenses
+        <span class="highlight">with anyone.</span>
+      </h1>
+  
+            <button class="btn btn-outline-success my-3 heading-btn fs-5" type="submit" href="/account" %>>
+            Get Started &nbsp;<i class="fa-solid fa-rocket"></i>
+            </button>
+       
+    </div>
+    <div class="col-sm main-img">
+      <img src="/images/main_image.jpg" alt="xPense" />
+    </div>
+  </div>
+</div>
+
+<footer class="py-5">
+  <div class="row">
+    <div class="col-6 col-md-2 mb-3">
+      <h5>Section</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2">
+          <a href="#" class="nav-link p-0 text-muted">xPenses</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a href="#" class="nav-link p-0 text-muted">About</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a href="#" class="nav-link p-0 text-muted">Press</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a href="#" class="nav-link p-0 text-muted">Blog</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a href="#" class="nav-link p-0 text-muted">Career</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-6 col-md-2 mb-3">
+      <h5>Section</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2">
+          <a href="#" class="nav-link p-0 text-muted">More</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a href="#" class="nav-link p-0 text-muted">Contact Us</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a href="#" class="nav-link p-0 text-muted">FAQ</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a href="#" class="nav-link p-0 text-muted">Terms of Service</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a href="#" class="nav-link p-0 text-muted">Privacy Policy</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-5 offset-md-1 mb-3 subscribe">
+      <form>
+        <h5>Subscribe to our newsletter</h5>
+        <p>Monthly digest of what's new and exciting from us.</p>
+        <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+          <label for="newsletter1" class="visually-hidden">Email address</label>
+          <input
+            id="newsletter1"
+            type="text"
+            class="form-control"
+            placeholder="Email address"
+          />
+          <button
+            class="btn btn-primary"
+            style="background-color: #18a582; border: 1px solid #18a582"
+            type="button"
+          >
+            Subscribe
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div
+    class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top"
+  >
+    <p>Made with love at Zignuts | © 2023 Company, Inc. All rights reserved.</p>
+    <ul class="list-unstyled d-flex">
+      <li class="ms-3">
+        <a class="link-dark" href="#"
+          ><i class="fa-brands fa-2x fa-x-twitter"></i
+        ></a>
+      </li>
+      <li class="ms-3">
+        <a class="link-dark" href="#"
+          ><i class="fa-brands fa-2x fa-square-facebook"></i
+        ></a>
+      </li>
+      <li class="ms-3">
+        <a class="link-dark" href="#"
+          ><i class="fa-brands fa-2x fa-instagram"></i
+        ></a>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+<!-- Login Modal -->
+<div
+  class="modal fade"
+  id="loginmodal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Login to xPenses
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" class="login">
+          <span class="text-danger login-error text-center d-block"></span>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+              name="email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Password"
+              name="password"
+              minlength="8"
+              autocomplete="on"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-success mt-3">Submit</button>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-success">Login</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- Sign up Modal -->
+<div
+  class="modal fade"
+  id="signupmodal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Sign Up to xPenses
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <span class="text-danger signup-error text-center d-block"></span>
+        <form method="post"  class="signup">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Full name</label>
+            <input
+              type="text"
+              class="form-control"
+              aria-describedby="emailHelp"
+              placeholder="John Doe"
+              name="name"
+              required
+              autocomplete="on"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+              name="email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Password"
+              name="password"
+              minlength="8"
+              required
+              autocomplete="on"
+            />
+          </div>
+          <button type="submit" class="btn btn-success mt-3">Submit</button>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-success">Login</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+// SIGNUP
+const signupForm = document.querySelector(".signup");
+const signupError = document.querySelector(".signup-error")
+signupForm.addEventListener("submit", async (e)=>{
+
+  e.preventDefault();
+  //reset error text
+  signupError.textContent = "";
+
+  const name = signupForm.name.value;
+  const email = signupForm.email.value;
+  const password = signupForm.password.value;
+
+  try{
+  const res = await fetch("/signup", {
+  method:"POST", body:JSON.stringify({name, email, password}), headers:{"Content-Type": "application/json"}});
+  const data = await res.json();
+  if(data.id){
+    location.assign("/account")
+  }else{
+    signupError.textContent = data?.message;
+  }
+  }catch(err){
+    console.log("Sign Up error: ",err)
+  }
+
+
+})
+
+
+//LOGIN
+const loginError = document.querySelector(".login-error");
+const loginForm = document.querySelector(".login");
+loginForm.addEventListener("submit",async (e)=>{
+  e.preventDefault();
+  //reset error text
+  loginError.textContent = "";
+
+  const email = loginForm.email.value;
+  const password = loginForm.password.value;
+  try{
+const res = await fetch("/login", {
+  method:"POST", body:JSON.stringify({email, password}), headers:{"Content-Type" : "application/json"}
+});
+const data = await res.json();
+
+  if(data.id){
+     location.assign("/account")
+  }else{
+      loginError.textContent = data?.message;
+  }
+  }catch(err){
+    console.log("Login error: ",err)
+  }
+
+})
+
+</script>

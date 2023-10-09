@@ -1,0 +1,30 @@
+.logo {
+  color: #18a582;
+}
+.heading {
+  font-size: 70px;
+}
+.navbar {
+  border-bottom: 1px solid rgb(216, 212, 212);
+}
+.highlight {
+  color: #18a582;
+}
+.heading-btn {
+  width: 200px;
+  height: 60px;
+}
+
+/* main */
+.main {
+  margin: 180px 0;
+}
+.main-img img {
+  margin-left: 190px;
+  height: 420px;
+}
+
+/* Footer */
+.subscribe {
+  margin-left: 280px;
+}

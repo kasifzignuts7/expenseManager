@@ -1,0 +1,340 @@
+<!-- Navbar section -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand fs-2 success logo ms-4" href="/">xPenses</a>
+  
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  </li> -->
+          </ul>
+  
+          <!-- Button trigger modal -->
+          <a href="/logout">
+            <button
+              type="button"
+              class="btn btn-outline-success mx-2"
+              data-bs-toggle="modal"
+              data-bs-target="#loginmodal"
+            >
+              Logout
+            </button>
+          </a>
+        </div>
+      </div>
+  </nav>
+<!-- Main section -->
+<div class="my-3 p-3 bg-body rounded shadow-sm">
+    <h4 class="border-bottom pb-2 mb-0">Group Transactions</h4>
+   <% if(expenses.length==0){ %>
+        <p class="text-danger">You do not have any transaction, Try adding one.</p>
+    <% }else{ %>
+     <%   expenses.forEach((e)=>{ %>
+      <div class="d-flex text-body-secondary pt-3">
+        <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#18a582"></rect></svg>
+        <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+          <div class="d-flex justify-content-between">
+            <strong class="text-gray-dark"><%=e.desc%></strong>
+           <div> <a
+            type="button"
+            href="/expense/edit/<%=e.id%>"
+            class="btn btn-success"
+          >
+           Edit
+           </a>
+            <a href="/expense/delete/<%=e.id%>" class="btn btn-danger">Delete</a></div>
+          </div>
+         <% if(e.transactiontype=="expense"){ %>
+            <span class="d-block text-danger">-<%=e.amount%></span>
+       <%   }else{ %>
+            <span class="d-block text-success">+<%=e.amount%></span>
+      <% } %>
+          
+        </div>
+      </div>
+     <%   })     }%>
+    <small class="d-block text-end mt-3">
+        <button
+          type="button"
+          class="btn"
+          data-bs-toggle="modal"
+          data-bs-target="#expensemodal"
+        >
+          <i class="fa-solid fa-3x fa-circle-plus text-success"></i>
+        </button>
+      </small>
+  </div>
+
+
+  <!-- Members container -->
+  <div class="my-5 p-3 bg-body rounded shadow-sm">
+    <h4 class="border-bottom pb-2 mb-0">Group members</h4>
+  <%  members.forEach((m)=>{ %>
+      <div class="d-flex text-body-secondary pt-3">
+        <svg
+          class="bd-placeholder-img flex-shrink-0 me-2 rounded bg-success"
+          width="32"
+          height="32"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-label="Placeholder: 32x32"
+          preserveAspectRatio="xMidYMid slice"
+          focusable="false"
+        >
+          <title>Placeholder</title>
+          <rect width="100%" height="100%" fill="#18a582"></rect>
+        </svg>
+        <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+          <div class="d-flex justify-content-between">
+            <strong class="text-gray-dark"><%= m?.name %> </strong>
+            <!-- <a href="#">
+                <i class="fa-solid fa-2x fa-pen-to-square text-success"></i>
+            </a> -->
+          </div>
+        </div>
+
+      </div>
+   <% }) %>
+     
+
+    <small class="d-block text-end mt-3">
+      <button
+        type="button"
+        class="btn"
+        data-bs-toggle="modal"
+        data-bs-target="#addmembermodal"
+      >
+        <i class="fa-solid fa-3x fa-circle-plus text-success"></i>
+      </button>
+    </small>
+  </div>
+<!-- Footer section -->
+<footer class="py-5">
+        <div class="row">
+          <div class="col-6 col-md-2 mb-3">
+            <h5>Section</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-2">
+                <a href="#" class="nav-link p-0 text-muted">xPenses</a>
+              </li>
+              <li class="nav-item mb-2">
+                <a href="#" class="nav-link p-0 text-muted">About</a>
+              </li>
+              <li class="nav-item mb-2">
+                <a href="#" class="nav-link p-0 text-muted">Press</a>
+              </li>
+              <li class="nav-item mb-2">
+                <a href="#" class="nav-link p-0 text-muted">Blog</a>
+              </li>
+              <li class="nav-item mb-2">
+                <a href="#" class="nav-link p-0 text-muted">Career</a>
+              </li>
+            </ul>
+          </div>
+  
+          <div class="col-6 col-md-2 mb-3">
+            <h5>Section</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-2">
+                <a href="#" class="nav-link p-0 text-muted">More</a>
+              </li>
+              <li class="nav-item mb-2">
+                <a href="#" class="nav-link p-0 text-muted">Contact Us</a>
+              </li>
+              <li class="nav-item mb-2">
+                <a href="#" class="nav-link p-0 text-muted">FAQ</a>
+              </li>
+              <li class="nav-item mb-2">
+                <a href="#" class="nav-link p-0 text-muted">Terms of Service</a>
+              </li>
+              <li class="nav-item mb-2">
+                <a href="#" class="nav-link p-0 text-muted">Privacy Policy</a>
+              </li>
+            </ul>
+          </div>
+  
+          <div class="col-md-5 offset-md-1 mb-3 subscribe">
+            <form>
+              <h5>Subscribe to our newsletter</h5>
+              <p>Monthly digest of what's new and exciting from us.</p>
+              <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+                <label for="newsletter1" class="visually-hidden"
+                  >Email address</label
+                >
+                <input
+                  id="newsletter1"
+                  type="text"
+                  class="form-control"
+                  placeholder="Email address"
+                />
+                <button
+                  class="btn btn-success"
+                  style="background-color: #18a582; border: 1px solid #18a582"
+                  type="button"
+                >
+                  Subscribe
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+  
+        <div
+          class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top"
+        >
+          <p>
+            Made with love at Zignuts | © 2023 Company, Inc. All rights reserved.
+          </p>
+          <ul class="list-unstyled d-flex">
+            <li class="ms-3">
+              <a class="link-dark" href="#"
+                ><i class="fa-brands fa-2x fa-x-twitter"></i
+              ></a>
+            </li>
+            <li class="ms-3">
+              <a class="link-dark" href="#"
+                ><i class="fa-brands fa-2x fa-square-facebook"></i
+              ></a>
+            </li>
+            <li class="ms-3">
+              <a class="link-dark" href="#"
+                ><i class="fa-brands fa-2x fa-instagram"></i
+              ></a>
+            </li>
+          </ul>
+        </div>
+</footer>
+
+
+
+ <!-- Add Expense modal -->
+ <div
+ class="modal fade"
+ id="expensemodal"
+ tabindex="-1"
+ aria-labelledby="exampleModalLabel"
+ aria-hidden="true"
+>
+ <div class="modal-dialog">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h1 class="modal-title fs-5" id="exampleModalLabel">Add Expense</h1>
+       <button
+         type="button"
+         class="btn-close"
+         data-bs-dismiss="modal"
+         aria-label="Close"
+       ></button>
+     </div>
+     <div class="modal-body">
+       <form method="post"  action ="/expense/add" class="account-add">
+        <label for="exampleInputEmail1">Select type of transaction: </label>
+        <select class="form-select" name="transactiontype" aria-label="Default select example" >
+            <option selected value="expense">Expense</option>
+            <option value="income">Income</option>
+            <option value="transfer">Transfer</option>
+        </select>
+         <div class="form-group">
+           <label for="exampleInputEmail1">Expense Desc: </label>
+           <input
+             type="text"
+             class="form-control desc"
+             aria-describedby="emailHelp"
+             placeholder="Groceries etc.,"
+             name="desc"
+             required
+           />
+         </div>
+         <div class="form-group">
+            <label for="exampleInputEmail1">Amount:  </label>
+            <input
+              type="number"
+              class="form-control amount"
+              aria-describedby="emailHelp"
+              placeholder="$ 10.99"
+              name="amount"
+              required
+            />
+          </div>
+         <!-- <button type="submit" class="btn btn-success mt-3">Submit</button> -->
+         <div class="modal-footer">
+           <button
+             type="button"
+             class="btn btn-secondary"
+             data-bs-dismiss="modal"
+           >
+             Close
+           </button>
+           <button class="btn btn-success" type="submit">
+             Add Expense
+           </button>
+         </div>
+       </form>
+     </div>
+   </div>
+ </div>
+</div>
+ <!-- Add members modal -->
+ <div
+ class="modal fade"
+ id="addmembermodal"
+ tabindex="-1"
+ aria-labelledby="exampleModalLabel"
+ aria-hidden="true"
+>
+ <div class="modal-dialog">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h1 class="modal-title fs-5" id="exampleModalLabel">Add member</h1>
+       <button
+         type="button"
+         class="btn-close"
+         data-bs-dismiss="modal"
+         aria-label="Close"
+       ></button>
+     </div>
+     <div class="modal-body">
+       <form method="post"  action ="/expense/addmember" class="account-add">
+         <div class="form-group">
+           <label for="exampleInputEmail1">Friend's email: </label>
+           <input
+             type="email"
+             class="form-control"
+             aria-describedby="emailHelp"
+             placeholder="friend@mail.com"
+             name="memberemail"
+             required
+           />
+         </div>
+         <div class="modal-footer">
+           <button
+             type="button"
+             class="btn btn-secondary"
+             data-bs-dismiss="modal"
+           >
+             Close
+           </button>
+           <button class="btn btn-success" type="submit">
+             Add member
+           </button>
+         </div>
+       </form>
+     </div>
+   </div>
+ </div>
+</div>
+
+
