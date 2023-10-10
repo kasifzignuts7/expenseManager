@@ -66,7 +66,6 @@ module.exports = {
       const deletedExpense = await Expense.destroyOne({ id: req.params.id });
       res.redirect(`/expense/${id}`);
     } catch (err) {
-      console.log(err);
       res.redirect(`/expense/${id}`);
     }
   },
@@ -75,7 +74,6 @@ module.exports = {
       const expense = await Expense.findOne({ id: req.params.id });
       res.view("pages/edittransaction", { expense: expense });
     } catch (err) {
-      console.log(err);
       res.redirect(`/expense/${id}`);
     }
   },
@@ -85,7 +83,6 @@ module.exports = {
       const expense = await Expense.update({ id: req.params.id }, data);
       res.redirect(`/expense/${id}`);
     } catch (err) {
-      console.log(err);
       res.redirect(`/expense/${id}`);
     }
   },

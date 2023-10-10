@@ -33,7 +33,6 @@ module.exports = {
         res.locals.account = accounts;
         res.view("pages/account");
       } catch (err) {
-        console.log("error", err);
         res.redirect("/");
       }
     } else {
@@ -52,7 +51,6 @@ module.exports = {
         });
         res.redirect("/account");
       } catch (err) {
-        console.log(err);
         res.status(400).json({ message: "account creation error" });
       }
     } else {
@@ -64,7 +62,6 @@ module.exports = {
       const deletedAcc = await Accounts.destroyOne({ id: req.params.id });
       res.redirect("/account");
     } catch (err) {
-      console.log(err);
       res.redirect("/account");
     }
   },
@@ -73,7 +70,6 @@ module.exports = {
       const account = await Accounts.findOne({ id: req.params.id });
       res.view("pages/editaccount", { a: account });
     } catch (err) {
-      console.log(err);
       res.redirect("/account");
     }
   },
@@ -86,7 +82,6 @@ module.exports = {
       );
       res.redirect("/account");
     } catch (err) {
-      console.log(err);
       res.redirect("/account");
     }
   },
