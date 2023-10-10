@@ -11,7 +11,6 @@
 module.exports.policies = {
   DashboardController: {
     homepage: "checkUser",
-    dashboard: ["authMiddleware", "checkUser"],
   },
   AccountsController: {
     "*": ["authMiddleware", "checkUser"],

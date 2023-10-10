@@ -5,13 +5,12 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 let id;
-var memberslist = [];
+let memberslist = [];
 module.exports = {
   expensepage: async function (req, res) {
     memberslist = [];
     id = req.params.id;
-    let expenses = await Expense.find({ groupid: id });
-    expenses = expenses.reverse();
+    let expenses = await Expense.find({ groupid: id }).sort("createdAt DESC");
     // .sort({ createdAt: -1 })
     const { members } = await Accounts.findOne({ id });
 
@@ -35,8 +34,7 @@ module.exports = {
       });
       res.redirect(`/expense/${id}`);
     } catch (err) {
-      res.status(400).json(err);
-      res.redirect("/account");
+      res.status(400).json(err).redirect("/account");
     }
   },
   addmember: async function (req, res) {
@@ -49,12 +47,11 @@ module.exports = {
           members.push(memberslist[i].id);
         }
         const tobeupdated = await Accounts.findOne({ id });
-
         tobeupdated.members = members;
 
         const updatedMembersList = await Accounts.updateOne(
           { id },
-          tobeupdated
+          { $push: { members: newMemberAcc.id } }
         );
         res.redirect(`/expense/${id}`);
       } else {
