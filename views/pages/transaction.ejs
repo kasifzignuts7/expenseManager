@@ -39,7 +39,7 @@
 <!-- Main section -->
 <div class="my-3 p-3 bg-body rounded shadow-sm">
     <h4 class="border-bottom pb-2 mb-0">Group Transactions</h4>
-   <% if(expenses.length==0){ %>
+   <% if(expenses==undefined || expenses.length === 0){ %>
         <p class="text-danger">You do not have any transaction, Try adding one.</p>
     <% }else{ %>
      <%   expenses.forEach((e)=>{ %>
@@ -50,12 +50,12 @@
             <strong class="text-gray-dark"><%=e.desc%></strong>
            <div> <a
             type="button"
-            href="/expense/edit/<%=e.id%>"
+            href="/transactions/edit/<%=e.id%>/<%=accountid%>"
             class="btn btn-success"
           >
            Edit
            </a>
-            <a href="/expense/delete/<%=e.id%>" class="btn btn-danger">Delete</a></div>
+            <a href="/transactions/delete/<%=e.id%>/<%=accountid%>" class="btn btn-danger">Delete</a></div>
           </div>
          <% if(e.transactiontype=="expense"){ %>
             <span class="d-block text-danger">-<%=e.amount%></span>
@@ -240,7 +240,7 @@
        ></button>
      </div>
      <div class="modal-body">
-       <form method="post"  action ="/expense/add" class="account-add">
+       <form method="post"  action ="/transactions/add/<%=accountid%>" class="account-add">
         <label for="exampleInputEmail1">Select type of transaction: </label>
         <select class="form-select" name="transactiontype" aria-label="Default select example" >
             <option selected value="expense">Expense</option>
@@ -307,7 +307,7 @@
        ></button>
      </div>
      <div class="modal-body">
-       <form method="post"  action ="/expense/addmember" class="account-add">
+       <form method="post"  action ="/account/addmember/<%=accountid%>" class="account-add">
          <div class="form-group">
            <label for="exampleInputEmail1">Friend's email: </label>
            <input

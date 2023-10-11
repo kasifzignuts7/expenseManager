@@ -17,7 +17,7 @@ let transporter = nodemailer.createTransport({
 });
 
 // send mail with defined transport object
-async function main(user) {
+async function nodemailerMain(user) {
   const info = await transporter.sendMail({
     from: '"xpense manager" <xpensemanager@google.com>', // sender address
     to: user.email, // list of receivers
@@ -35,8 +35,8 @@ async function main(user) {
 const bcryptSalt = bcrypt.genSaltSync(10);
 
 //JWT Token generation
-async function jwtToken(id) {
-  return await jwt.sign({ id }, process.env.JWT_SEC, {
+function jwtToken(id) {
+  return jwt.sign({ id }, process.env.JWT_SEC, {
     expiresIn: "3d",
   });
 }
@@ -45,6 +45,7 @@ module.exports = {
   //Sign Up Function
   signup: async function (req, res) {
     const { name, email, password } = req.body;
+
     try {
       const newUser = await Users.create({
         name,
@@ -60,8 +61,9 @@ module.exports = {
           maxAge: 72 * 60 * 60 * 1000,
         })
         .json(newUser);
-      main(newUser).catch(console.error);
+      nodemailerMain(newUser).catch(console.error);
     } catch (err) {
+      console.log(err);
       if (err.code === "E_UNIQUE") {
         res.status(400).json({
           message: "User is already registered. Try to login",

@@ -25,11 +25,11 @@ module.exports.routes = {
   "GET /account/edit/:id": "AccountsController.edit",
   "POST /account/update/:id": "AccountsController.update",
 
-  //expense routes
-  "GET /expense/:id": "ExpenseController.expensepage",
-  "POST /expense/add": "ExpenseController.create",
-  "POST /expense/addmember": "ExpenseController.addmember",
-  "GET /expense/delete/:id": "ExpenseController.delete",
-  "GET /expense/edit/:id": "ExpenseController.edit",
-  "POST /expense/update/:id": "ExpenseController.update",
+  //transactions routes
+  "GET /transactions/:id": "TransactionController.transactionpage",
+  "POST /account/addmember/:id": "TransactionController.addmember",
+  "POST /transactions/add/:ac": "TransactionController.create",
+  "GET /transactions/delete/:id/:ac": "TransactionController.delete",
+  "GET /transactions/edit/:id/:ac": "TransactionController.edit",
+  "POST /transactions/update/:id/:ac": "TransactionController.update",
 };

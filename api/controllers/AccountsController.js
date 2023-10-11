@@ -29,10 +29,14 @@ module.exports = {
     if (token) {
       try {
         const loggedInUser = await checkUser(token);
-        const accounts = await Accounts.find({ members: loggedInUser.id });
-        res.locals.account = accounts;
+        const userAccounts = await Users.find({
+          id: loggedInUser.id,
+        }).populate("accounts");
+
+        res.locals.account = userAccounts[0].accounts;
         res.view("pages/account");
       } catch (err) {
+        console.log(err);
         res.redirect("/");
       }
     } else {
@@ -40,17 +44,23 @@ module.exports = {
     }
   },
   create: async function (req, res) {
-    const groupName = req.body.groupname;
     const token = req.cookies.jwt;
     if (token) {
+      const groupName = req.body.groupname;
       try {
         const loggedInUser = await checkUser(token);
-        const newGroup = await Accounts.create({
+        const createdGroup = await Accounts.create({
           name: groupName,
-          members: [loggedInUser.id],
-        });
+        }).fetch();
+
+        await Users.addToCollection(
+          loggedInUser.id,
+          "accounts",
+          createdGroup.id
+        );
         res.redirect("/account");
       } catch (err) {
+        console.log(err);
         res.status(400).json({ message: "account creation error" });
       }
     } else {
@@ -60,6 +70,12 @@ module.exports = {
   delete: async function (req, res) {
     try {
       const deletedAcc = await Accounts.destroyOne({ id: req.params.id });
+      const loggedInUser = await checkUser(token);
+      await Users.removeFromCollection(
+        loggedInUser.id,
+        "accounts",
+        req.params.id
+      );
       res.redirect("/account");
     } catch (err) {
       res.redirect("/account");
@@ -76,10 +92,7 @@ module.exports = {
   update: async function (req, res) {
     const name = req.body.groupname;
     try {
-      const account = await Accounts.update(
-        { id: req.params.id },
-        { name: name }
-      );
+      await Accounts.update({ id: req.params.id }, { name: name });
       res.redirect("/account");
     } catch (err) {
       res.redirect("/account");

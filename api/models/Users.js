@@ -10,7 +10,9 @@ module.exports = {
     name: { type: "string", required: true },
     email: { type: "string", required: true, unique: true },
     password: { type: "string", required: true },
-    createdAt: { type: "number", autoCreatedAt: true },
-    updatedAt: { type: "number", autoUpdatedAt: true },
+    accounts: {
+      collection: "accounts",
+      via: "members",
+    },
   },
 };

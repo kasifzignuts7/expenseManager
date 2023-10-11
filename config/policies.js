@@ -15,7 +15,7 @@ module.exports.policies = {
   AccountsController: {
     "*": ["authMiddleware", "checkUser"],
   },
-  ExpenseController: {
+  TransactionController: {
     "*": ["authMiddleware", "checkUser"],
   },
   /***************************************************************************

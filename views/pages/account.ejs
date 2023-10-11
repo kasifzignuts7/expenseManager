@@ -39,10 +39,10 @@
     <!-- main container -->
     <div class="my-5 p-3 bg-body rounded shadow-sm">
       <h6 class="border-bottom pb-2 mb-0">Yours Groups</h6>
-      <% if(account.length==0){ %>
+      <% if(account === undefined || account.length === 0){ %>
       <p class="text-danger">You do not have any groups. Try creating one.</p>
       <% }else{ %> <% account.forEach((a)=>{ %>
-      <a href="/expense/<%= a.id %>">
+      <a href="/transactions/<%= a.id %>">
         <div class="d-flex text-body-secondary pt-3">
           <svg
             class="bd-placeholder-img flex-shrink-0 me-2 rounded bg-success"

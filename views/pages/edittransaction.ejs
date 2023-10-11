@@ -37,7 +37,7 @@
       </div>
   </nav>
 
-<form method="post"  action ="/expense/update/<%=expense.id%>" class="edit-transaction my-5">
+<form method="post"  action ="/transactions/update/<%=expense.id%>/<%=accountid%>" class="edit-transaction my-5">
     <label for="exampleInputEmail1">Select type of transaction: </label>
     <select class="form-select" name="transactiontype" aria-label="Default select example" value="<%=expense.transactiontype%>" >
         <option value="expense">Expense</option>

@@ -8,8 +8,14 @@
 module.exports = {
   attributes: {
     name: { type: "string", required: true },
-    members: { type: "json", columnType: "array" },
-    createdAt: { type: "number", autoCreatedAt: true },
-    updatedAt: { type: "number", autoUpdatedAt: true },
-  }
+    // members: { type: "json", columnType: "array" },
+    members: {
+      collection: "users",
+      via: "accounts",
+    },
+    transactions: {
+      collection: "transaction",
+      via: "account",
+    },
+  },
 };
