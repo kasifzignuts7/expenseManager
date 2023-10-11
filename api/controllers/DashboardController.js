@@ -8,7 +8,6 @@
 module.exports = {
   //Homepage
   homepage: function (req, res) {
-    // console.log("hey");
     res.view("pages/homepage");
   },
 };

@@ -13,5 +13,5 @@ module.exports = {
     amount: { type: "number", required: true },
     createdAt: { type: "number", autoCreatedAt: true },
     updatedAt: { type: "number", autoUpdatedAt: true },
-  },
+  }
 };

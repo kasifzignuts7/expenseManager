@@ -11,6 +11,5 @@ module.exports = {
     members: { type: "json", columnType: "array" },
     createdAt: { type: "number", autoCreatedAt: true },
     updatedAt: { type: "number", autoUpdatedAt: true },
-  },
-  datastore: "default",
+  }
 };
