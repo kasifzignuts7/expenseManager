@@ -14,5 +14,9 @@ module.exports = {
       collection: "accounts",
       via: "members",
     },
+    indtransaction: {
+      collection: "transaction",
+      via: "owner",
+    },
   },
 };

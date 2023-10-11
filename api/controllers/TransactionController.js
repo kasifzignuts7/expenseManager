@@ -1,21 +1,45 @@
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
 /**
  *
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
+async function checkUser(token) {
+  return jwt.verify(token, process.env.JWT_SEC, async (err, decodedToken) => {
+    if (err) {
+      console.log("accounts check user: ", err);
+    } else if (decodedToken) {
+      const user = await Users.findOne({ id: decodedToken.id });
+      return user;
+    }
+  });
+}
 module.exports = {
   transactionpage: async function (req, res) {
     const transactions = await Accounts.find({ id: req.params.id }).populate(
       "transactions"
     );
-    const tr = transactions[0].transactions.reverse();
+    const transactionss = transactions[0].transactions.reverse();
+
+    if (transactionss) {
+      for (const transaction of transactionss) {
+        console.log("tr", transaction);
+        // const trr = await Transaction.find({
+        //   id: transactions[0].transactions[0].id,
+        // }).populate("owner");
+      }
+    }
+
     const members = await Accounts.find({ id: req.params.id }).populate(
       "members"
     );
+    console.log("members", members[0].members);
 
     res.view("pages/transaction", {
-      expenses: tr,
+      expenses: transactionss,
       members: members[0].members,
       accountid: req.params.id,
     });
@@ -30,9 +54,16 @@ module.exports = {
         amount,
       }).fetch();
 
+      const createdBy = await checkUser(req.cookies.jwt);
+
       await Accounts.addToCollection(
         req.params.ac,
         "transactions",
+        newTransaction.id
+      );
+      await Users.addToCollection(
+        createdBy.id,
+        "indtransaction",
         newTransaction.id
       );
       res.redirect(`/transactions/${req.params.ac}`);

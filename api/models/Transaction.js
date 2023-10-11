@@ -10,6 +10,9 @@ module.exports = {
     account: {
       model: "accounts",
     },
+    owner: {
+      model: "users",
+    },
     transactiontype: { type: "string", required: true },
     desc: { type: "string", required: true },
     amount: { type: "number", required: true },
