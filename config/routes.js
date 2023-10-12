@@ -32,4 +32,10 @@ module.exports.routes = {
   "GET /transactions/delete/:id/:ac": "TransactionController.delete",
   "GET /transactions/edit/:id/:ac": "TransactionController.edit",
   "POST /transactions/update/:id/:ac": "TransactionController.update",
+  "GET /transactions/transfer/:ac": "TransactionController.transferpage",
+  "POST /transactions/transfer/:ac": "TransactionController.transfer",
+  "GET /transactions/transfer/edit/:id/:ac":
+    "TransactionController.edittransfer",
+  "POST /transactions/transfer/update/:id/:ac":
+    "TransactionController.updatetransfer",
 };

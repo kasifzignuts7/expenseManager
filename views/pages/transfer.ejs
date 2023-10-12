@@ -37,39 +37,28 @@
       </div>
   </nav>
 
-<form method="post"  action ="/transactions/update/<%=expense.id%>/<%=accountid%>" class="edit-transaction my-5">
-    <label for="exampleInputEmail1">Select type of transaction: </label>
-    <select class="form-select" name="transactiontype" aria-label="Default select example" value="<%=expense.transactiontype%>" >
-        <option value="expense">Expense</option>
-        <option value="income">Income</option>
+<form method="post"  action ="/transactions/transfer/<%=accountid%>" class="my-5">
+    <label for="exampleInputEmail1">Select member for Transfer </label>
+    <select class="form-select" name="transfermember" aria-label="Default select example" value="" >
+     <% members.forEach((m)=>{ %>
+        <option value="<%=m.id%>"> <%=m.name%> | <%=m.email%></option>
+    <%  }) %>
     </select>
      <div class="form-group">
-       <label for="exampleInputEmail1">Expense Desc: </label>
-       <input
-         type="text"
-         class="form-control desc"
-         aria-describedby="emailHelp"
-         placeholder="Groceries etc.,"
-         name="desc"
-         required
-         value="<%=expense.desc%>"
-       />
-     </div>
-     <div class="form-group">
-        <label for="exampleInputEmail1">Amount:  </label>
+       <label for="exampleInputEmail1">Amount: </label>
         <input
-          type="number"
-          class="form-control amount"
-          aria-describedby="emailHelp"
-          placeholder="$ 10.99"
-          name="amount"
-          required
-          value="<%=expense.amount%>"
-        />
-      </div>
+        type="text"
+        class="form-control desc"
+        placeholder="$100"
+        name="amount"
+       required
+      />
+     </div>
        <button class="btn btn-success my-3" type="submit">
-         Edit Expense
+         Transfer
        </button>
+
    </form>
+
 
 

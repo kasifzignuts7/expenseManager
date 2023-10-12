@@ -16,5 +16,7 @@ module.exports = {
     transactiontype: { type: "string", required: true },
     desc: { type: "string", required: true },
     amount: { type: "number", required: true },
+    transferto: { type: "string" },
+    transferfrom: { type: "string" },
   },
 };

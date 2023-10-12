@@ -20,11 +20,17 @@
   margin: 180px 0;
 }
 .main-img img {
-  margin-left: 190px;
   height: 420px;
 }
 
-/* Footer */
-.subscribe {
-  margin-left: 280px;
+@media only screen and (max-width: 600px) {
+  .main-img img {
+    height: 360px;
+  }
+  .heading {
+    font-size: 60px;
+  }
+  .main {
+    margin: 60px 0;
+  }
 }
