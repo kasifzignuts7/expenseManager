@@ -23,10 +23,10 @@ module.exports = {
       "transactions"
     );
     const transactionss = transactions[0].transactions.reverse();
-    const forUserbalance = transactions[0].transactions;
     const trr = [];
-
+  
     if (transactionss) {
+      const forUserbalance = transactions[0].transactions;
       for (const transaction of forUserbalance) {
         const tr = await Transaction.findOne({
           id: transaction.id,
