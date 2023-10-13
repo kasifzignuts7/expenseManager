@@ -114,7 +114,9 @@
             <strong class="text-gray-dark"><%= m?.name %> </strong>
             <strong class="text-gray-dark fs-6">
           <%  const userAmount =  userWiseAmount.find((user)=>user.name==m.name) %>
-           <%  if(userAmount){ %>
+           <%  if(userAmount && members.length===1){ %>
+            <%=  (totalsum / members.length)%>
+         <%  }else if(userAmount){ %>
                 <%=  (totalsum / members.length) - userAmount.balance %>
          <%  }else{ %>
                 <%=totalsum / members.length%>

@@ -83,6 +83,8 @@ module.exports = {
     const members = await Accounts.find({ id: req.params.id }).populate(
       "members"
     );
+    console.log("members[0].members: ", members[0].members.length);
+    console.log("totalsum: ", totalsum);
 
     res.view("pages/transaction", {
       expenses: transactionss,
