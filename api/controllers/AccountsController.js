@@ -69,20 +69,51 @@ module.exports = {
     }
   },
 
-  //========Delete account page==========
+  //========Delete account==========
   delete: async function (req, res) {
+    /*If user deletes an account
+      1. Remove link between account and transaction
+      2. Remove link between account and members
+      3. Delete all transaction from database which are linked with that account
+      */
     try {
-      const deletedAcc = await Accounts.destroyOne({ id: req.params.id });
-      const loggedInUser = await checkUser(token);
+      //======Finding the linked transaction & members======
+      const deleteAccTransactions = await Accounts.findOne({
+        id: req.params.id,
+      }).populate("transactions");
 
-      //========Removing link between user and account page==========
-      await Users.removeFromCollection(
-        loggedInUser.id,
-        "accounts",
-        req.params.id
+      const deleteAccMembers = await Accounts.findOne({
+        id: req.params.id,
+      }).populate("members");
+
+      const transactionsToBeDeleted = deleteAccTransactions.transactions.map(
+        (indTransc) => indTransc.id
       );
+      const membersToBeRemoved = deleteAccMembers.members.map(
+        (member) => member.id
+      );
+
+      //======== 1. Removing link between account and member==========
+      await Accounts.removeFromCollection(req.params.id, "members").members(
+        membersToBeRemoved
+      );
+
+      // //======== 2. Removing link between account and transactions===========
+      await Accounts.removeFromCollection(
+        req.params.id,
+        "transactions"
+      ).members(transactionsToBeDeleted);
+
+      //======== 3. Delete all transaction from database which are linked with that account===========
+      await Transaction.destroy({
+        id: { in: transactionsToBeDeleted },
+      });
+
+      //=======At last delete the account=======
+      const deletedAcc = await Accounts.destroyOne({ id: req.params.id });
       res.redirect("/account");
     } catch (err) {
+      console.log("account deletion err", err);
       res.redirect("/account");
     }
   },
