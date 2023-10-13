@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-  //Homepage
+  //========Home page==========
   homepage: function (req, res) {
     res.view("pages/homepage");
   },

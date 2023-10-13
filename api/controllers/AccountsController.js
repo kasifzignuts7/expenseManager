@@ -8,10 +8,7 @@ require("dotenv").config();
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
-// const Accounts = require("../models/Accounts");
-
-// const Accounts = require("../models/Accounts");
-
+//========JWT verify user helper function==========
 async function checkUser(token) {
   return jwt.verify(token, process.env.JWT_SEC, async (err, decodedToken) => {
     if (err) {
@@ -24,6 +21,7 @@ async function checkUser(token) {
 }
 
 module.exports = {
+  //========Main Account page============
   main: async function (req, res) {
     const token = req.cookies.jwt;
     if (token) {
@@ -33,6 +31,7 @@ module.exports = {
           id: loggedInUser.id,
         }).populate("accounts");
 
+        //Check if user in any account
         res.locals.account = userAccounts[0].accounts;
         res.view("pages/account");
       } catch (err) {
@@ -43,6 +42,7 @@ module.exports = {
       res.redirect("/");
     }
   },
+  //========Create Account page============
   create: async function (req, res) {
     const token = req.cookies.jwt;
     if (token) {
@@ -53,6 +53,7 @@ module.exports = {
           name: groupName,
         }).fetch();
 
+        //========Joining account with particular user==========
         await Users.addToCollection(
           loggedInUser.id,
           "accounts",
@@ -67,10 +68,14 @@ module.exports = {
       res.redirect("/");
     }
   },
+
+  //========Delete account page==========
   delete: async function (req, res) {
     try {
       const deletedAcc = await Accounts.destroyOne({ id: req.params.id });
       const loggedInUser = await checkUser(token);
+
+      //========Removing link between user and account page==========
       await Users.removeFromCollection(
         loggedInUser.id,
         "accounts",
@@ -81,14 +86,17 @@ module.exports = {
       res.redirect("/account");
     }
   },
+  //========Edit accountpage==========
   edit: async function (req, res) {
     try {
       const account = await Accounts.findOne({ id: req.params.id });
+      //==========Find account and populate input fields with existing value=======
       res.view("pages/editaccount", { a: account });
     } catch (err) {
       res.redirect("/account");
     }
   },
+  //========Edit accountpage name==========
   update: async function (req, res) {
     const name = req.body.groupname;
     try {

@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 module.exports = function (req, res, next) {
+  //========Authenticate user at every route and passdata into locals for ui purpose========
   const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, process.env.JWT_SEC, async (err, decodedToken) => {
