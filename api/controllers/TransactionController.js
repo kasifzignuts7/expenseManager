@@ -152,15 +152,11 @@ module.exports = {
     try {
       //===========Finding transaction and populate page with input values==========
       const transaction = await Transaction.findOne({ id: req.params.id });
-      if (transaction) {
-        res.view("pages/edittransaction", {
-          expense: transaction,
-          accountid: req.params.ac,
-        });
-      } else {
-        //===========Edit transaction not found in db==========
-        res.redirect(`/transactions/${req.params.ac}`);
-      }
+
+      res.view("pages/edittransaction", {
+        expense: transaction,
+        accountid: req.params.ac,
+      });
     } catch (err) {
       console.log("transaction edit error", err);
       res.redirect(`/transactions/${req.params.ac}`);
@@ -199,20 +195,24 @@ module.exports = {
   },
   //===========Transfer page==========
   transferpage: async function (req, res) {
-    const account = await Accounts.findOne({ id: req.params.ac }).populate(
-      "members"
-    );
-    const loggedInUser = await checkUser(req.cookies.jwt);
+    try {
+      const account = await Accounts.findOne({ id: req.params.ac }).populate(
+        "members"
+      );
+      const loggedInUser = await checkUser(req.cookies.jwt);
 
-    //===========Removing logged in user from list because member can't transfer amount to ownself==========
-    const members = account.members.filter(
-      (member) => member.id != loggedInUser.id
-    );
+      //===========Removing logged in user from list because member can't transfer amount to themself==========
+      const members = account.members.filter(
+        (member) => member.id != loggedInUser.id
+      );
 
-    res.view("pages/transfer", {
-      members: members,
-      accountid: req.params.ac,
-    });
+      res.view("pages/transfer", {
+        members: members,
+        accountid: req.params.ac,
+      });
+    } catch (err) {
+      console.log("transfer page err", err);
+    }
   },
   //===========Create transfer==========
   transfer: async function (req, res) {
