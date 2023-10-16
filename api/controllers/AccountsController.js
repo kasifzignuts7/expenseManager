@@ -22,7 +22,7 @@ async function checkUser(token) {
 
 module.exports = {
   //========Main Account page============
-  main: async function (req, res) {
+  accountspage: async function (req, res) {
     const token = req.cookies.jwt;
     if (token) {
       try {

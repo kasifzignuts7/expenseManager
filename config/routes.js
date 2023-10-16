@@ -19,7 +19,7 @@ module.exports.routes = {
   "GET /logout": "UsersController.logout",
 
   //account routes
-  "GET /account": "AccountsController.main",
+  "GET /account": "AccountsController.accountspage",
   "POST /account/add": "AccountsController.create",
   "GET /account/delete/:id": "AccountsController.delete",
   "GET /account/edit/:id": "AccountsController.edit",

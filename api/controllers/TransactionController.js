@@ -69,7 +69,7 @@ module.exports = {
     });
     const userDetailsArray = Array.from(userBalances.values());
 
-    //=========Total sum========
+    //=========for Total sum========
     const totalsum = memberWiseTransactions.reduce((sum, tr) => {
       if (tr.transactiontype == "expense") {
         sum -= tr.amount;
@@ -83,8 +83,6 @@ module.exports = {
     const members = await Accounts.find({ id: req.params.id }).populate(
       "members"
     );
-    console.log("members[0].members: ", members[0].members.length);
-    console.log("totalsum: ", totalsum);
 
     res.view("pages/transaction", {
       expenses: transactionss,
@@ -132,7 +130,7 @@ module.exports = {
         id: req.params.id,
       });
       const createdBy = await checkUser(req.cookies.jwt);
-      //===========Removin link between account and user==========
+      //===========Removing link between account and user==========
       await Accounts.removeFromCollection(
         req.params.ac,
         "transactions",
@@ -141,7 +139,7 @@ module.exports = {
       await Users.removeFromCollection(
         createdBy.id,
         "indtransaction",
-        newTransaction.id
+        req.params.id
       );
       res.redirect(`/transactions/${req.params.ac}`);
     } catch (err) {
@@ -185,7 +183,7 @@ module.exports = {
     try {
       const newMember = await Users.findOne({ email: req.body.memberemail });
 
-      //===========Only registered memeber can be entered in account==========
+      //===========Only registered memeber can be added in account==========
       if (newMember) {
         //===========If found linking with particular account==========
         await Accounts.addToCollection(req.params.id, "members", newMember.id);
