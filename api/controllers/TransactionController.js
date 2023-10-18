@@ -1,96 +1,87 @@
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
-
 /**
  *
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
-//========JWT verify user helper function==========
-async function checkUser(token) {
-  return jwt.verify(token, process.env.JWT_SEC, async (err, decodedToken) => {
-    if (err) {
-      console.log("accounts check user err: ", err);
-    } else if (decodedToken) {
-      const user = await Users.findOne({ id: decodedToken.id });
-      return user;
-    }
-  });
-}
 module.exports = {
   transactionpage: async function (req, res) {
-    const transactions = await Accounts.find({ id: req.params.id }).populate(
-      "transactions"
-    );
-    //==========Reversing the Transaction==========
-    const transactionss = transactions[0].transactions.reverse();
-    const memberWiseTransactions = [];
+    try {
+      const transactions = await Accounts.findOne({
+        id: req.params.id,
+      }).populate("transactions");
+      //==========Reversing the Transaction==========
+      const transactionss = transactions.transactions.reverse();
+      const memberWiseTransactions = [];
 
-    if (transactionss) {
-      const forUserbalance = transactions[0].transactions;
-      for (const transaction of forUserbalance) {
-        const tr = await Transaction.findOne({
-          id: transaction.id,
-        }).populate("owner");
-        memberWiseTransactions.push(tr);
-      }
-    }
-
-    const userBalances = new Map();
-
-    // Helper function to update the balance in the map
-    function updateBalance(userId, amount) {
-      //========Create distinct user list with their balances with MAP==========
-      if (!userBalances.has(userId)) {
-        const owner = memberWiseTransactions.find(
-          (transaction) => transaction.owner.id === userId
-        ).owner;
-        userBalances.set(userId, { name: owner.name, balance: 0 });
-      }
-      userBalances.get(userId).balance += amount;
-    }
-    // ==========Looping helper function on each fields===========
-    memberWiseTransactions.forEach((transaction) => {
-      const { owner, transactiontype, amount, transferto, transferfrom } =
-        transaction;
-      const ownerId = owner.id;
-
-      if (transactiontype === "income") {
-        updateBalance(ownerId, amount); // Credit
-      } else if (transactiontype === "expense") {
-        updateBalance(ownerId, -amount); // Debit
-      } else if (transactiontype === "transfer") {
-        updateBalance(ownerId, -amount); //Debit from sender's account
-        if (transferto) {
-          updateBalance(transferto, amount); //Credit in receiver's account
+      if (transactionss) {
+        const forUserbalance = transactions.transactions;
+        for (const transaction of forUserbalance) {
+          const tr = await Transaction.findOne({
+            id: transaction.id,
+          }).populate("owner");
+          memberWiseTransactions.push(tr);
         }
       }
-    });
-    const userDetailsArray = Array.from(userBalances.values());
 
-    //=========for Total sum========
-    const totalsum = memberWiseTransactions.reduce((sum, tr) => {
-      if (tr.transactiontype == "expense") {
-        sum -= tr.amount;
-      } else if (tr.transactiontype == "income") {
-        sum += tr.amount;
+      const userBalances = new Map();
+
+      // Helper function to update the balance in the map
+      function updateBalance(userId, amount) {
+        //========Create distinct user list with their balances with MAP==========
+        if (!userBalances.has(userId)) {
+          const owner = memberWiseTransactions.find((transaction) => {
+            return transaction.owner.id === userId;
+          }).owner;
+
+          userBalances.set(userId, { name: owner.name, balance: 0 });
+        }
+        userBalances.get(userId).balance += amount;
       }
-      return sum;
-    }, 0);
+      // ==========Looping helper function on each fields===========
+      memberWiseTransactions.forEach((transaction) => {
+        const { owner, transactiontype, amount, transferto, transferfrom } =
+          transaction;
+        const ownerId = owner.id;
 
-    //===========For Members List==========
-    const members = await Accounts.find({ id: req.params.id }).populate(
-      "members"
-    );
+        if (transactiontype === "income") {
+          updateBalance(ownerId, amount); // Credit
+        } else if (transactiontype === "expense") {
+          updateBalance(ownerId, -amount); // Debit
+        } else if (transactiontype === "transfer") {
+          updateBalance(ownerId, -amount); //Debit from sender's account
+          if (transferto) {
+            updateBalance(transferto, amount); //Credit in receiver's account
+          }
+        }
+      });
+      const userDetailsArray = Array.from(userBalances.values());
 
-    res.view("pages/transaction", {
-      expenses: transactionss,
-      members: members[0].members,
-      accountid: req.params.id,
-      userWiseAmount: userDetailsArray,
-      totalsum: totalsum,
-    });
+      //=========for Total sum========
+      const totalsum = memberWiseTransactions.reduce((sum, tr) => {
+        if (tr.transactiontype == "expense") {
+          sum -= tr.amount;
+        } else if (tr.transactiontype == "income") {
+          sum += tr.amount;
+        }
+        return sum;
+      }, 0);
+
+      //===========For Members List==========
+      const members = await Accounts.find({ id: req.params.id }).populate(
+        "members"
+      );
+
+      res.view("pages/transaction", {
+        expenses: transactionss,
+        members: members[0].members,
+        accountid: req.params.id,
+        userWiseAmount: userDetailsArray,
+        totalsum: totalsum,
+      });
+    } catch (err) {
+      console.log("err", err);
+    }
   },
   //===========Create Transaction==========
   create: async function (req, res) {
@@ -103,7 +94,7 @@ module.exports = {
         amount,
       }).fetch();
 
-      const createdBy = await checkUser(req.cookies.jwt);
+      const createdBy = await sails.helpers.checkUser(req.cookies.jwt);
 
       //===========Linking transaction between user and account==========
       await Accounts.addToCollection(
@@ -129,7 +120,7 @@ module.exports = {
       const deletedTransations = await Transaction.destroyOne({
         id: req.params.id,
       });
-      const createdBy = await checkUser(req.cookies.jwt);
+      const createdBy = await sails.helpers.checkUser(req.cookies.jwt);
       //===========Removing link between account and user==========
       await Accounts.removeFromCollection(
         req.params.ac,
@@ -199,7 +190,7 @@ module.exports = {
       const account = await Accounts.findOne({ id: req.params.ac }).populate(
         "members"
       );
-      const loggedInUser = await checkUser(req.cookies.jwt);
+      const loggedInUser = await sails.helpers.checkUser(req.cookies.jwt);
 
       //===========Removing logged in user from list because member can't transfer amount to themself==========
       const members = account.members.filter(
@@ -219,7 +210,7 @@ module.exports = {
     try {
       let { transfermember, amount } = req.body;
       transfermember = await Users.findOne({ id: transfermember });
-      const createdBy = await checkUser(req.cookies.jwt);
+      const createdBy = await sails.helpers.checkUser(req.cookies.jwt);
 
       const newTransaction = await Transaction.create({
         transferto: transfermember.id,
@@ -252,7 +243,7 @@ module.exports = {
     try {
       const transaction = await Transaction.findOne({ id: id });
       const account = await Accounts.findOne({ id: ac }).populate("members");
-      const loggedInUser = await checkUser(req.cookies.jwt);
+      const loggedInUser = await sails.helpers.checkUser(req.cookies.jwt);
       const members = account.members.filter(
         (member) => member.id != loggedInUser.id
       );

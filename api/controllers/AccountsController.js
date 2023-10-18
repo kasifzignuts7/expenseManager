@@ -1,6 +1,3 @@
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
-
 /**
  * AccountsController
  *
@@ -8,24 +5,12 @@ require("dotenv").config();
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
-//========JWT verify user helper function==========
-async function checkUser(token) {
-  return jwt.verify(token, process.env.JWT_SEC, async (err, decodedToken) => {
-    if (err) {
-      console.log("accounts check user: ", err);
-    } else if (decodedToken) {
-      const user = await Users.findOne({ id: decodedToken.id });
-      return user;
-    }
-  });
-}
-
 module.exports = {
   //========Main Account page============
   accountspage: async function (req, res) {
     const token = req.cookies.jwt;
     try {
-      const loggedInUser = await checkUser(token);
+      const loggedInUser = await sails.helpers.checkUser(token);
       const userAccounts = await Users.find({
         id: loggedInUser.id,
       }).populate("accounts");
@@ -34,7 +19,7 @@ module.exports = {
       res.locals.account = userAccounts[0].accounts;
       res.view("pages/account");
     } catch (err) {
-      console.log(err);
+      console.log("account page err", err);
       res.redirect("/");
     }
   },
@@ -44,7 +29,7 @@ module.exports = {
     if (token) {
       const groupName = req.body.groupname;
       try {
-        const loggedInUser = await checkUser(token);
+        const loggedInUser = await await sails.helpers.checkUser(token);
         const createdGroup = await Accounts.create({
           name: groupName,
         }).fetch();

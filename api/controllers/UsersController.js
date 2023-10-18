@@ -1,39 +1,9 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const nodemailer = require("nodemailer");
-
-//Node mailer
-let transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    // type: "OAuth2",
-    user: "zignutsexpensemanager@gmail.com",
-    pass: "fbyhcjoazmjetlyo",
-    // clientId: process.env.OAUTH_CLIENTID,
-    // clientSecret: process.env.OAUTH_CLIENT_SECRET,
-    // refreshToken: process.env.OAUTH_REFRESH_TOKEN
-  },
-});
-
-// send mail with defined transport object
-async function welcomeEmail(user) {
-  const info = await transporter.sendMail({
-    from: '"xpense manager" <xpensemanager@google.com>', // sender address
-    to: user.email, // list of receivers
-    subject:
-      "Welcome to xPense manager  - Your Smart Solution for Financial Tracking!", // Subject line
-    text: `Dear ${user.name},
-    Welcome to xPense manager app! Simplify your financial tracking with our intuitive app. Log expenses, set budgets, and gain control.`, // plain text body
-    // html: "", // html body
-  });
-
-  // console.log("Message sent: %s", info.messageId);
-}
 
 //PASSWORD HASHING
 const bcryptSalt = bcrypt.genSaltSync(10);
-
 //JWT Token generation
 function jwtToken(id) {
   return jwt.sign({ id }, process.env.JWT_SEC, {
@@ -64,7 +34,7 @@ module.exports = {
         })
         .json(newUser);
       //=========Welcome email function call========
-      welcomeEmail(newUser).catch(console.error);
+      await sails.helpers.welcomeEmail(newUser);
     } catch (err) {
       console.log(err);
       if (err.code === "E_UNIQUE") {
