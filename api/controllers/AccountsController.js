@@ -24,21 +24,17 @@ module.exports = {
   //========Main Account page============
   accountspage: async function (req, res) {
     const token = req.cookies.jwt;
-    if (token) {
-      try {
-        const loggedInUser = await checkUser(token);
-        const userAccounts = await Users.find({
-          id: loggedInUser.id,
-        }).populate("accounts");
+    try {
+      const loggedInUser = await checkUser(token);
+      const userAccounts = await Users.find({
+        id: loggedInUser.id,
+      }).populate("accounts");
 
-        //Check if user in any account
-        res.locals.account = userAccounts[0].accounts;
-        res.view("pages/account");
-      } catch (err) {
-        console.log(err);
-        res.redirect("/");
-      }
-    } else {
+      //Check if user in any account
+      res.locals.account = userAccounts[0].accounts;
+      res.view("pages/account");
+    } catch (err) {
+      console.log(err);
       res.redirect("/");
     }
   },
