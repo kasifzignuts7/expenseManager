@@ -1,15 +1,7 @@
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-//PASSWORD HASHING
+//FOR PASSWORD HASHING
 const bcryptSalt = bcrypt.genSaltSync(10);
-//JWT Token generation
-function jwtToken(id) {
-  return jwt.sign({ id }, process.env.JWT_SEC, {
-    expiresIn: "3d",
-  });
-}
 
 module.exports = {
   //=========Sign Up user========
@@ -25,7 +17,7 @@ module.exports = {
       }).fetch();
 
       //=========Passing jwt token in cookie with 3d validity========
-      const token = await jwtToken(newUser.id);
+      const token = await sails.helpers.generateJwt(newUser.id);
       res
         .status(200)
         .cookie("jwt", token, {
@@ -36,7 +28,6 @@ module.exports = {
       //=========Welcome email function call========
       await sails.helpers.welcomeEmail(newUser);
     } catch (err) {
-      console.log(err);
       if (err.code === "E_UNIQUE") {
         res.status(400).json({
           message: "User is already registered. Try to login",
@@ -61,7 +52,8 @@ module.exports = {
         //=========Check if password match with hashed password in db========
         if (hashedPasswordCheck) {
           //=========If password match, generate jwt token and pass in cookie========
-          const token = await jwtToken(user.id);
+          const token = await sails.helpers.generateJwt(user.id);
+
           res
             .status(200)
             .cookie("jwt", token, {
@@ -82,6 +74,7 @@ module.exports = {
           .send({ message: "Please check the email and password." });
       }
     } catch (err) {
+      console.log("login err", err);
       res.status(400).send({ message: "User login error. Please try again." });
     }
   },

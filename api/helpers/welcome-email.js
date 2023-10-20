@@ -1,12 +1,13 @@
 const nodemailer = require("nodemailer");
+require("dotenv").config()
 
 //Node mailer
 let transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     // type: "OAuth2",
-    user: "zignutsexpensemanager@gmail.com",
-    pass: "fbyhcjoazmjetlyo",
+    user: sails.config.custom.sendermail,
+    pass: process.env.mailPass,
     // clientId: process.env.OAUTH_CLIENTID,
     // clientSecret: process.env.OAUTH_CLIENT_SECRET,
     // refreshToken: process.env.OAUTH_REFRESH_TOKEN
