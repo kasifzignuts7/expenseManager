@@ -4,12 +4,12 @@ module.exports = {
     const token = req.cookies.jwt;
     try {
       const loggedInUser = await sails.helpers.checkUser(token);
-      const userAccounts = await Users.find({
+      const userAccounts = await Users.findOne({
         id: loggedInUser.id,
       }).populate("accounts");
 
       //Check if user in any account
-      res.locals.account = userAccounts[0].accounts;
+      res.locals.account = userAccounts.accounts;
       res.view("pages/account");
     } catch (err) {
       console.log("account page err", err);
@@ -18,28 +18,19 @@ module.exports = {
   },
   //========Create Account page============
   create: async function (req, res) {
-    const token = req.cookies.jwt;
-    if (token) {
-      const groupName = req.body.groupname;
-      try {
-        const loggedInUser = await await sails.helpers.checkUser(token);
-        const createdGroup = await Accounts.create({
-          name: groupName,
-        }).fetch();
+    const groupName = req.body.groupname;
+    try {
+      const loggedInUser = await await sails.helpers.checkUser(req.cookies.jwt);
+      const createdGroup = await Accounts.create({
+        name: groupName,
+      }).fetch();
 
-        //========Joining account with particular user==========
-        await Users.addToCollection(
-          loggedInUser.id,
-          "accounts",
-          createdGroup.id
-        );
-        res.redirect("/account");
-      } catch (err) {
-        console.log(err);
-        res.status(400).json({ message: "account creation error" });
-      }
-    } else {
-      res.redirect("/");
+      //========Joining account with particular user==========
+      await Users.addToCollection(loggedInUser.id, "accounts", createdGroup.id);
+      res.redirect("back");
+    } catch (err) {
+      console.log("account creation", err);
+      res.status(400).json({ message: "account creation error" });
     }
   },
 
@@ -85,10 +76,10 @@ module.exports = {
 
       //=======At last delete the account=======
       const deletedAcc = await Accounts.destroyOne({ id: req.params.id });
-      res.redirect("/account");
+      res.redirect("back");
     } catch (err) {
       console.log("account deletion err", err);
-      res.redirect("/account");
+      res.redirect("back");
     }
   },
   //========Edit accountpage==========

@@ -4,6 +4,7 @@ module.exports = {
       const transactions = await Accounts.findOne({
         id: req.params.id,
       }).populate("transactions");
+
       //==========Reversing the Transaction==========
       const transactionss = transactions.transactions.reverse();
       const memberWiseTransactions = [];
@@ -26,9 +27,9 @@ module.exports = {
         if (!userBalances.has(userId)) {
           const owner = memberWiseTransactions.find((transaction) => {
             return transaction.owner.id === userId;
-          }).owner;
+          })?.owner;
 
-          userBalances.set(userId, { name: owner.name, balance: 0 });
+          userBalances.set(userId, { name: owner?.name, balance: 0 });
         }
         userBalances.get(userId).balance += amount;
       }
@@ -74,7 +75,7 @@ module.exports = {
         totalsum: totalsum,
       });
     } catch (err) {
-      console.log("err", err);
+      console.log("transaction page err", err);
     }
   },
   //===========Create Transaction==========
@@ -101,10 +102,10 @@ module.exports = {
         "indtransaction",
         newTransaction.id
       );
-      res.redirect(`/transactions/${req.params.ac}`);
+      res.redirect("back");
     } catch (err) {
       console.log("transaction create error", err);
-      res.redirect(`/transactions/${req.params.ac}`);
+      res.redirect("back");
     }
   },
   //===========Delete Transaction==========
@@ -125,10 +126,10 @@ module.exports = {
         "indtransaction",
         req.params.id
       );
-      res.redirect(`/transactions/${req.params.ac}`);
+      res.redirect("back");
     } catch (err) {
       console.log("transaction delete error", err);
-      res.redirect(`/transactions/${req.params.ac}`);
+      res.redirect("back");
     }
   },
   //===========Edit Transaction==========
@@ -167,14 +168,14 @@ module.exports = {
       if (newMember) {
         //===========If found linking with particular account==========
         await Accounts.addToCollection(req.params.id, "members", newMember.id);
-        res.redirect(`/transactions/${req.params.id}`);
+        res.redirect("back");
       } else {
         console.log("Not a valid user...");
-        res.redirect(`/transactions/${req.params.id}`);
+        res.redirect("back");
       }
     } catch (err) {
       console.log("add member err", err);
-      res.redirect(`/transactions/${req.params.id}`);
+      res.redirect("back");
     }
   },
   //===========Transfer page==========
@@ -196,6 +197,7 @@ module.exports = {
       });
     } catch (err) {
       console.log("transfer page err", err);
+      res.redirect("back");
     }
   },
   //===========Create transfer==========
