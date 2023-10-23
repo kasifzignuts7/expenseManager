@@ -1,4 +1,3 @@
-
 module.exports = {
   transactionpage: async function (req, res) {
     try {
@@ -106,13 +105,12 @@ module.exports = {
     } catch (err) {
       console.log("transaction create error", err);
       res.redirect(`/transactions/${req.params.ac}`);
-      // res.status(400).json(err).redirect("/account");
     }
   },
   //===========Delete Transaction==========
   delete: async function (req, res) {
     try {
-      const deletedTransations = await Transaction.destroyOne({
+      const deletedTransation = await Transaction.destroyOne({
         id: req.params.id,
       });
       const createdBy = await sails.helpers.checkUser(req.cookies.jwt);
@@ -239,6 +237,8 @@ module.exports = {
       const transaction = await Transaction.findOne({ id: id });
       const account = await Accounts.findOne({ id: ac }).populate("members");
       const loggedInUser = await sails.helpers.checkUser(req.cookies.jwt);
+
+      //===========Removing logged in user from list because member can't transfer amount to themself==========
       const members = account.members.filter(
         (member) => member.id != loggedInUser.id
       );
@@ -251,7 +251,7 @@ module.exports = {
       });
     } catch (err) {
       console.log("edit transfer err", err);
-      //res.redirect(`/transactions/${ac}`);
+      res.redirect(`/transactions/${ac}`);
     }
   },
   //===========Update transfer page==========

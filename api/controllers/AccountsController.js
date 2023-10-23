@@ -1,5 +1,3 @@
-
-
 module.exports = {
   //========Main Account page============
   accountspage: async function (req, res) {

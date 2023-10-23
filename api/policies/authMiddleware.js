@@ -3,6 +3,7 @@ require("dotenv").config();
 
 module.exports = function (req, res, next) {
   //=========Checking user at routes, if user is valid continue else redirect to homepage(login/signup first)
+
   const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, process.env.JWT_SEC, (err, decodedToken) => {
