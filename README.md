@@ -1,6 +1,6 @@
 # Expense Manager App
 
-- **The app is live here**: [xPense Manager App]: https://xpense-manager.onrender.com/
+- **The app is live here**: https://xpense-manager.onrender.com/
 
 ## Overview
 
