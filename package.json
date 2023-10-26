@@ -12,6 +12,7 @@
     "dotenv": "^16.3.1",
     "grunt": "1.0.4",
     "jsonwebtoken": "^9.0.2",
+    "mongo": "^0.1.0",
     "nodemailer": "^6.9.5",
     "sails": "^1.5.8",
     "sails-hook-grunt": "^5.0.0",

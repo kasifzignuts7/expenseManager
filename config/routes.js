@@ -13,7 +13,7 @@ const UsersController = require("../api/controllers/UsersController");
 module.exports.routes = {
   "/": "DashboardController.homepage",
 
-  //User routes
+  //user routes
   "POST /signup": "UsersController.signup",
   "POST /login": "UsersController.login",
   "GET /logout": "UsersController.logout",
