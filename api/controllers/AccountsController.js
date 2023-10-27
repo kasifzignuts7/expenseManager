@@ -10,10 +10,10 @@ module.exports = {
 
       //Check if user in any account
       res.locals.account = userAccounts.accounts;
-      res.view("pages/account");
+      return res.view("pages/account");
     } catch (err) {
       console.log("account page err", err);
-      res.redirect("/");
+      return res.redirect("/");
     }
   },
   //========Create Account page============
@@ -27,10 +27,10 @@ module.exports = {
 
       //========Joining account with particular user==========
       await Users.addToCollection(loggedInUser.id, "accounts", createdGroup.id);
-      res.redirect("back");
+      return res.redirect("back");
     } catch (err) {
       console.log("account creation", err);
-      res.status(400).json({ message: "account creation error" });
+      return res.serverError(err);
     }
   },
 
@@ -76,10 +76,10 @@ module.exports = {
 
       //=======At last delete the account=======
       const deletedAcc = await Accounts.destroyOne({ id: req.params.id });
-      res.redirect("back");
+      return res.redirect("back");
     } catch (err) {
       console.log("account deletion err", err);
-      res.redirect("back");
+      return res.redirect("back");
     }
   },
   //========Edit accountpage==========
@@ -87,9 +87,9 @@ module.exports = {
     try {
       const account = await Accounts.findOne({ id: req.params.id });
       //==========Find account and populate input fields with existing value=======
-      res.view("pages/editaccount", { a: account });
+      return res.view("pages/editaccount", { a: account });
     } catch (err) {
-      res.redirect("/account");
+      return res.redirect("/account");
     }
   },
   //========Edit accountpage name==========
@@ -97,9 +97,9 @@ module.exports = {
     const name = req.body.groupname;
     try {
       await Accounts.update({ id: req.params.id }, { name: name });
-      res.redirect("/account");
+      return res.redirect("/account");
     } catch (err) {
-      res.redirect("/account");
+      return res.redirect("/account");
     }
   },
 };

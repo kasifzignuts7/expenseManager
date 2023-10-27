@@ -67,7 +67,7 @@ module.exports = {
         "members"
       );
 
-      res.view("pages/transaction", {
+      return res.view("pages/transaction", {
         expenses: transactionss,
         members: members[0].members,
         accountid: req.params.id,
@@ -76,6 +76,7 @@ module.exports = {
       });
     } catch (err) {
       console.log("transaction page err", err);
+      return res.serverError(err);
     }
   },
   //===========Create Transaction==========
@@ -102,10 +103,10 @@ module.exports = {
         "indtransaction",
         newTransaction.id
       );
-      res.redirect("back");
+      return res.redirect("back");
     } catch (err) {
       console.log("transaction create error", err);
-      res.redirect("back");
+      return res.redirect("back");
     }
   },
   //===========Delete Transaction==========
@@ -126,10 +127,10 @@ module.exports = {
         "indtransaction",
         req.params.id
       );
-      res.redirect("back");
+      return res.redirect("back");
     } catch (err) {
       console.log("transaction delete error", err);
-      res.redirect("back");
+      return res.redirect("back");
     }
   },
   //===========Edit Transaction==========
@@ -138,13 +139,13 @@ module.exports = {
       //===========Finding transaction and populate page with input values==========
       const transaction = await Transaction.findOne({ id: req.params.id });
 
-      res.view("pages/edittransaction", {
+      return res.view("pages/edittransaction", {
         expense: transaction,
         accountid: req.params.ac,
       });
     } catch (err) {
       console.log("transaction edit error", err);
-      res.redirect(`/transactions/${req.params.ac}`);
+      return res.redirect(`/transactions/${req.params.ac}`);
     }
   },
   //===========Update Transaction==========
@@ -153,10 +154,10 @@ module.exports = {
 
     try {
       const transaction = await Transaction.update({ id: req.params.id }, data);
-      res.redirect(`/transactions/${req.params.ac}`);
+      return res.redirect(`/transactions/${req.params.ac}`);
     } catch (err) {
       console.log("transaction update error", err);
-      res.redirect(`/transactions/${req.params.ac}`);
+      return res.redirect(`/transactions/${req.params.ac}`);
     }
   },
   //===========Adding new member==========
@@ -168,14 +169,13 @@ module.exports = {
       if (newMember) {
         //===========If found linking with particular account==========
         await Accounts.addToCollection(req.params.id, "members", newMember.id);
-        res.redirect("back");
-      } else {
-        console.log("Not a valid user...");
-        res.redirect("back");
+        return res.redirect("back");
       }
+      console.log("Not a valid user...");
+      return res.redirect("back");
     } catch (err) {
       console.log("add member err", err);
-      res.redirect("back");
+      return res.redirect("back");
     }
   },
   //===========Transfer page==========
@@ -191,13 +191,13 @@ module.exports = {
         (member) => member.id != loggedInUser.id
       );
 
-      res.view("pages/transfer", {
+      return res.view("pages/transfer", {
         members: members,
         accountid: req.params.ac,
       });
     } catch (err) {
       console.log("transfer page err", err);
-      res.redirect("back");
+      return res.redirect("back");
     }
   },
   //===========Create transfer==========
@@ -226,10 +226,10 @@ module.exports = {
         "indtransaction",
         newTransaction.id
       );
-      res.redirect(`/transactions/${req.params.ac}`);
+      return res.redirect(`/transactions/${req.params.ac}`);
     } catch (err) {
       console.log("transfer err", err);
-      res.redirect(`/transactions/${req.params.ac}`);
+      return res.redirect(`/transactions/${req.params.ac}`);
     }
   },
   //===========Edit transfer page==========
@@ -245,7 +245,7 @@ module.exports = {
         (member) => member.id != loggedInUser.id
       );
 
-      res.view("pages/edittransfer", {
+      return res.view("pages/edittransfer", {
         members: members,
         tr: transaction,
         transactionid: id,
@@ -253,7 +253,7 @@ module.exports = {
       });
     } catch (err) {
       console.log("edit transfer err", err);
-      res.redirect(`/transactions/${ac}`);
+      return res.redirect(`/transactions/${ac}`);
     }
   },
   //===========Update transfer page==========
@@ -262,10 +262,10 @@ module.exports = {
 
     try {
       const transaction = await Transaction.update({ id: req.params.id }, data);
-      res.redirect(`/transactions/${req.params.ac}`);
+      return res.redirect(`/transactions/${req.params.ac}`);
     } catch (err) {
       console.log("transaction update error", err);
-      res.redirect(`/transactions/${req.params.ac}`);
+      return res.redirect(`/transactions/${req.params.ac}`);
     }
   },
 };
