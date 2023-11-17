@@ -9,7 +9,7 @@ module.exports = {
     const { name, email, password } = req.body;
 
     try {
-      //=========Creating new user with hashed password========
+      //=========Creating new user with hashed password=======
       const newUser = await Users.create({
         name,
         email,
