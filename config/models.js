@@ -58,8 +58,7 @@ module.exports.models = {
    * By convention, this is your primary key attribute (`id`), as well as two *
    * other timestamp attributes for tracking when records were last created   *
    * or updated.                                                              *
-   *                                                                          *rs
-   * > For more info, see:                                                    *
+   *                                                                          *rs                                                   *
    * > https://sailsjs.com/docs/concepts/orm/model-settings#?attributes       *
    *                                                                          *
    ***************************************************************************/
